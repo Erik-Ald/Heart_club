@@ -1,0 +1,150 @@
+<!doctype html>
+<html xml:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/sign_up.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="module" th:src="@{/js/sign_up.js}"></script>
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=6LcDWO0nAAAAAC3S0eg_eqBxBnevjj7O6EkyipUB"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <title>Sign Up</title>
+</head>
+<body>
+<header th:insert="~{fragments/general.html ::header}"> </header>
+<main>
+    <div class="container-sign-up container-left">
+        <div class="std-box">
+            <div class="box-sign-up-header">
+                <h2 th:text="#{signUp.header}"/>
+            </div>
+            <ul class="wrapper progress">
+                <li class="step-level step-level-current" id="step-level-1">
+                    <span>1</span>
+                    <a>Personal information</a>
+                </li>
+                <li class="step-level step-level-hidden" id="step-level-2">
+                    <span>2</span>
+                    <a>Log in information</a>
+                </li>
+                <li class="step-level step-level-hidden step-level-last" id="step-level-3">
+                    <span>3</span>
+                    <a>Finish</a>
+                </li>
+            </ul>
+            <div class="link">
+                <a href="/login">I already have an account</a>
+            </div>
+        </div>
+        <div class="box-language" th:insert="~{fragments/general.html ::.box-language}"></div>
+    </div>
+    <div class="container-sign-up container-right">
+        <div class="box-sign-up std-box">
+            <div class="box-sign-up-form">
+                <div class="box-sign-up-form-names box-with-details">
+                    <div class="box-text">
+                        <label for="firstname" th:text="#{signUp.firstname}"/>
+                        <div class="input-wrapper">
+                            <input type="text" name="firstname" id="firstname" required>
+                        </div>
+                    </div>
+                    <div class="box-text">
+                        <label for="lastname" th:text="#{signUp.lastname}"/>
+                        <div class="input-wrapper">
+                            <input type="text" name="lastname" id="lastname" required>
+                        </div>
+                    </div>
+                    <div class="box-text">
+                        <label for="middle-name" th:text="#{signUp.middlename}"/>
+                        <input type="text" name="middle-name" id="middle-name">
+                    </div>
+                </div>
+                <div class="box-sign-up-personal-details box-with-details">
+                    <div class="box-text">
+                        <label for="birth-date" th:text="#{signUp.birthDate}"/>
+                        <div class="input-wrapper">
+                            <input type="date" name="birth-date" id="birth-date" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-with-details">
+                    <div class="box-text">
+                        <label for="gender">Gender</label>
+                        <div class="custom-select">
+                            <select id="gender" name="gender">
+                                <option>Male</option>
+                                <option>Female</option>
+                                <option>Non-binary</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="container-navigation-buttons" th:insert="~{fragments/general.html ::.box-navigation-buttons}"></div>
+            </div>
+        </div>
+        <div class="box-sign-up std-box hidden-box">
+            <div class="box-sign-up-form">
+                <div class="box-with-details">
+                    <div class="box-text">
+                        <label for="email">E-mail</label>
+                        <div class="input-wrapper">
+                            <input type="email" name="email" id="email" th:value="${user.getEmail()}"required>
+                        </div>
+                        <div class="box-error">
+                            <a id="error-email" class="hidden">Your email address is not correct.</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-sign-up-security-details box-with-details">
+                    <div class="box-text">
+                        <label for="password" th:text="#{signIn.password}"/>
+                        <div class="input-wrapper">
+                            <input type="password" name="password" id="password" required>
+                        </div>
+                        <div class="box-error">
+                            <a id="error-easy" class="hidden">Your password is too easy</a>
+                            <a id="error-main" class="hidden">Your password needs to</a>
+                            <ul>
+                                <li id="error_length" class="hidden">be at least 8 characters long</li>
+                                <li id="error_symbols" class="hidden">include at least one number or symbol</li>
+                                <li id="error_characters" class="hidden">include both lower and upper characters</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box-text">
+                        <label for="reentry-password" th:text="#{signUp.reentry}"/>
+                        <div class="input-wrapper">
+                            <input type="password" name="reentry-password" id="reentry-password" required>
+                        </div>
+                        <div class="box-error">
+                            <a id="error-password-match" class="hidden">Please make sure your passwords match.</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-navigation-buttons" th:insert="~{fragments/general.html ::.box-navigation-buttons}"></div>
+            </div>
+        </div>
+        <div class="box-sign-up std-box hidden-box">
+            <div class="box-sign-up-form">
+                <div class="box-text box-description">
+                    <a>This is the last step for sign up. After you submit your registration form, you will receive by mail
+                    a confirmation letter. This letter will contain a link, which one will activate your account.</a>
+                </div>
+                <div class="box-text box-personal-data">
+                    <input type="checkbox" id="personal-info">
+                    <label for="personal-info">I agree to process my personal data.</label>
+                </div>
+                <div class="box-text" id="sign-up-button">
+                    <button>Sign up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
