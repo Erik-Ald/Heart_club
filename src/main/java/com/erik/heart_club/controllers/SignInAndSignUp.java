@@ -29,9 +29,6 @@ public class SignInAndSignUp {
     private final UserService userService;
     private final MessageSource messages;
 
-    @Autowired
-    ApplicationEventPublisher eventPublisher;
-
     @GetMapping("/")
     public String getMainPage() {
         return "index";
@@ -49,30 +46,6 @@ public class SignInAndSignUp {
         }
         model.addAttribute("user", new User());
         return "sign_up_page";
-    }
-
-    @PostMapping(value = "/sign_up", consumes = "application/json")
-    public String createUser(@RequestBody UserRegistrationDto user, BindingResult bindingResult, HttpServletRequest request, Model model) {
-
-        System.out.println(user.getEmail());
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("user", user);
-            return "sign_up_page";
-        }
-
-        try {
-            User createdUser = userService.createNewUser(user);
-            String appUrl =request.getContextPath();
-            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(createdUser, appUrl));
-        } catch (UserAlreadyExistException uaeEx) {
-            model.addAttribute("user", user);
-            model.addAttribute("error","An account for that email already exists.");
-            return "sign_up_page";
-        } catch (RuntimeException ex) {
-            model.addAttribute("user", user);
-            return "email_error_page";
-        }
-        return "sign_in_page";
     }
 
     @GetMapping("/registrationConfirm")

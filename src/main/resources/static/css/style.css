@@ -65,7 +65,7 @@ input[type="email"], input[type="password"],
     input[type="text"],input[type="date"], .custom-select{
     border-radius: 15px;
     margin: 2vh 0;
-    padding: 1vh 1vw;
+    padding: 10px 15px;
     border-color: white;
     border-width: 0;
     background-color: var(--color-background);
@@ -75,7 +75,7 @@ input[type="email"], input[type="password"],
     box-sizing: border-box;
 }
 input[type="text"] {
-    min-width: 200px;
+    min-width: 100px;
 }
 input[type="email"], input[type="password"],
     input[type="text"], input[type="date"] {
@@ -83,7 +83,7 @@ input[type="email"], input[type="password"],
 }
 input[type="checkbox"] {
     appearance: none;
-    border: 1.5px solid var(--color-main);
+    border: 2px solid var(--color-main);
     border-radius: 5px;
     width: 20px;
     height: 20px;
@@ -118,8 +118,9 @@ button {
     padding: 1vh 2vw;
     background-color: var(--color-main);
     color: aliceblue;
-    font-size: 2vh;
+    font-size: 15px;
     width: 100%;
+    min-height: 40px;
 }
 button:hover {
     background-color: #ce3232;
@@ -241,7 +242,7 @@ button:hover {
     flex-direction: column;
     align-items: center;
     min-width: 300px;
-    margin: 0 1vw;
+    margin: 2vh 1vw;
 }
 
 #new-user a {
@@ -271,10 +272,11 @@ button:hover {
 }
 
 .box-language {
-    margin: 2vh 0;
+    margin: 0 0;
 }
 .box-language a {
     color: darkgray;
+    margin: 0 5px;
 }
 
 .custom-select select {
@@ -359,5 +361,41 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
+}
+.circle {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: whiteSmoke;
+    box-shadow: 4px -40px 60px 5px #ffffff inset;
+}
+.loader {
+    background: linear-gradient(to right, var(--color-main) 50%, transparent 50%);
+    animation: spin 1s infinite linear;
+}
+
+.loader:before {
+    display: block;
+    content: '';
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90px;
+    height: 90px;
+    background: #ffffff;
+    border-radius: 50%;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+.container-loader {
+    display: flex;
+    align-content: center;
+    flex-grow: 1;
+    justify-content: center;
 }

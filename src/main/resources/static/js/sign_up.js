@@ -72,6 +72,9 @@ $(document).ready(function() {
                 .removeClass("arrowanim");
         });
 
+        $("progress")
+            .val(currentStep+1/numOfSteps)
+            .attr("max",numOfSteps);
 });
 
 let numOfSteps = $(".progress").find("li").length-1;
@@ -98,6 +101,9 @@ function nextLevel() {
     stepLevels
         .eq(currentStep-1)
         .removeClass("step-level-current");
+
+    $("progress")
+        .val(currentStep+1/numOfSteps);
 }
 function previousLevel() {
     stepLevels
@@ -108,6 +114,9 @@ function previousLevel() {
         .eq(currentStep+1)
         .toggleClass("step-level-hidden")
         .removeClass("step-level-current");
+
+    $("progress")
+        .val(currentStep+1/numOfSteps);
 }
 function getAmountOfEmptyRequiredInputs() {
     let n = 0;
@@ -126,14 +135,7 @@ function getAmountOfEmptyRequiredInputs() {
 
     return n;
 }
-/*
-function onClick(e) {
-    e.preventDefault();
-    grecaptcha.enterprise.ready(async () => {
-        const token = await grecaptcha.enterprise.execute('6Lflr48nAAAAAATzanDbJIl6SehKWBmJJOGrwRHN', {action: 'LOGIN'});
-    });
-};
-*/
+
 $(".button-next").on("click",function (){
     let isNextBoxPermit = false;
     switch (currentStep) {
@@ -151,7 +153,7 @@ $(".button-next").on("click",function (){
                 isNextBoxPermit = true;
             }
     }
-    console.log(currentStep);
+
     if(isNextBoxPermit) {
         if(currentStep != numOfSteps) {
             nextBox();
@@ -216,13 +218,16 @@ $(".box-with-details").find("#email").on("keyup", function () {
 $(".box-with-details").find("#password").on("keyup", function () {
     let  currentInput = $(this);
     let  password = currentInput.val();
+    let errorNumber = 0;
     const passwordManager = new PasswordManager(password);
     let strength = passwordManager.checkPasswordStrength();
     if (strength < 75) {
 
     }
+
     if (passwordManager.num.Excess < 0) {
         $("#error_length").removeClass("hidden");
+        errorNumber++;
 
         currentInput
             .parent()
@@ -231,6 +236,7 @@ $(".box-with-details").find("#password").on("keyup", function () {
         $(".button-next").find("button").attr("disabled","true");
     } else {
         $("#error_length").addClass("hidden");
+        errorNumber--;
 
         currentInput
             .parent()
@@ -239,6 +245,7 @@ $(".box-with-details").find("#password").on("keyup", function () {
 
     if (passwordManager.num.Numbers == 0  && passwordManager.num.Symbols == 0) {
         $("#error_symbols").removeClass("hidden");
+        errorNumber++;
 
         currentInput
             .parent()
@@ -247,6 +254,7 @@ $(".box-with-details").find("#password").on("keyup", function () {
         $(".button-next").find("button").attr("disabled","true");
     } else {
         $("#error_symbols").addClass("hidden");
+        errorNumber--;
 
         currentInput
             .parent()
@@ -256,6 +264,7 @@ $(".box-with-details").find("#password").on("keyup", function () {
     if (passwordManager.num.Upper == 0
         || password.replace(/[^a-zA-z]/gi, '').length == passwordManager.num.Upper) {
         $("#error_characters").removeClass("hidden");
+        errorNumber++;
 
         currentInput
             .parent()
@@ -264,10 +273,17 @@ $(".box-with-details").find("#password").on("keyup", function () {
         $(".button-next").find("button").attr("disabled","true");
     } else {
         $("#error_characters").addClass("hidden");
+        errorNumber--;
 
         currentInput
             .parent()
             .removeClass("input-error");
+    }
+
+    if(errorNumber > 0) {
+        $("#error-main").removeClass("hidden");
+    } else {
+        $("#error-main").addClass("hidden");
     }
 
     if (passwordManager.num.Excess >= 0 && (passwordManager.num.Numbers > 0 || passwordManager.num.Symbols > 0)
@@ -303,39 +319,70 @@ $(".box-with-details").find("#reentry-password").on("keyup", function () {
     }
 });
 
+$("#personal-info").on("click", function () {
+    if($(this).is(':checked')) {
+        $("#sign-up-send-button").removeAttr("disabled");
+    } else {
+        $("#sign-up-send-button").attr("disabled","true");
+    }
+});
 
-    $("#sign-up-button").on("click", function (e){
-        //e.preventDefault();
-        console.log("a");
-        grecaptcha.execute('6LcDWO0nAAAAAC3S0eg_eqBxBnevjj7O6EkyipUB', {action: 'submit'}).then(function(token){
-            console.log("c");
-            console.log(token);
-            let firstName = $(".box-with-details").find("#firstname");
-            let lastName = $(".box-with-details").find("#lastname");
-            let middleName = $(".box-with-details").find("#middle-name");
-            let dateOfBirth = $(".box-with-details").find("#birth-date");
-            let sex = $(".box-with-details").find("#gender");
-            let email = $(".box-with-details").find("#email");
-            let password = $(".box-with-details").find("#password");
+$("#sign-up-button").on("click", function (e){
 
-            let regForm = {
-                "firstName": firstName.val(),
-                "lastName": lastName.val(),
-                "middleName": middleName.val(),
-                "sex": sex.val(),
-                "dateOfBirth": dateOfBirth.val(),
-                "email": email.val(),
-                "password": password.val()
+    nextBox();
+    $(".container-left").hide();
+
+    grecaptcha.execute('6LcDWO0nAAAAAC3S0eg_eqBxBnevjj7O6EkyipUB', {action: 'submit'}).then(function(token){
+
+        let firstName = $(".box-with-details").find("#firstname");
+        let lastName = $(".box-with-details").find("#lastname");
+        let middleName = $(".box-with-details").find("#middle-name");
+        let dateOfBirth = $(".box-with-details").find("#birth-date");
+        let sex = $(".box-with-details").find("#gender");
+        let email = $(".box-with-details").find("#email");
+        let password = $(".box-with-details").find("#password");
+
+        let regForm = {
+            "firstName": firstName.val(),
+            "lastName": lastName.val(),
+            "middleName": middleName.val(),
+            "sex": sex.val(),
+            "dateOfBirth": dateOfBirth.val(),
+            "email": email.val(),
+            "password": password.val()
+        }
+
+        $.ajax({
+            url: '/api/user/add',
+            type: 'POST',
+            dataType : "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(regForm),
+            async: false,
+            success: function () {
+                $(".container-loader").addClass("hidden");
+                $("#end-message-container-left-success").removeClass("hidden");
+                $("#end-message-container-right-success").removeClass("hidden");
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $(".container-loader").addClass("hidden");
+                $("#end-message-container-left-error").removeClass("hidden");
+                $(".end-message").removeClass("hidden");
+                switch (jqXHR.status) {
+                    case 403:
+                        $("#end-message-container-right-email-already-exist").removeClass("hidden");
+                        break;
+                    case 400:
+                        $("#end-message-container-right-bad-request")
+                            .removeClass("hidden")
+                            .append("<p>"+jqXHR.responseText+"</p>");
+                        break;
+                    case 500:
+                        $("#end-message-container-right-error")
+                            .removeClass("hidden")
+                            .append("<p>"+jqXHR.responseText+"</p>");
+                }
             }
-            console.log(regForm);
-            $.ajax({
-                url: '/sign_up',
-                type: 'POST',
-                dataType : "json",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(regForm),
-                async: false
-            });
         });
     });
-//window.onSubmit = onSubmit;
+});

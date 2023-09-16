@@ -25,40 +25,43 @@
             <ul class="wrapper progress">
                 <li class="step-level step-level-current" id="step-level-1">
                     <span>1</span>
-                    <a>Personal information</a>
+                    <a th:text="#{signUp.step.personalInfo}"></a>
                 </li>
                 <li class="step-level step-level-hidden" id="step-level-2">
                     <span>2</span>
-                    <a>Log in information</a>
+                    <a th:text="#{signUp.step.logInInfo}"></a>
                 </li>
                 <li class="step-level step-level-hidden step-level-last" id="step-level-3">
                     <span>3</span>
-                    <a>Finish</a>
+                    <a th:text="#{signUp.step.final}"></a>
                 </li>
             </ul>
             <div class="link">
-                <a href="/login">I already have an account</a>
+                <a href="/login" th:text="#{signUp.alreadyRegistered}"></a>
             </div>
         </div>
         <div class="box-language" th:insert="~{fragments/general.html ::.box-language}"></div>
     </div>
     <div class="container-sign-up container-right">
+        <div class="std-box box-progress">
+            <progress max="100" value="0"></progress>
+        </div>
         <div class="box-sign-up std-box">
             <div class="box-sign-up-form">
                 <div class="box-sign-up-form-names box-with-details">
-                    <div class="box-text">
+                    <div class="box-text box-horizontal">
                         <label for="firstname" th:text="#{signUp.firstname}"/>
                         <div class="input-wrapper">
                             <input type="text" name="firstname" id="firstname" required>
                         </div>
                     </div>
-                    <div class="box-text">
+                    <div class="box-text box-horizontal">
                         <label for="lastname" th:text="#{signUp.lastname}"/>
                         <div class="input-wrapper">
                             <input type="text" name="lastname" id="lastname" required>
                         </div>
                     </div>
-                    <div class="box-text">
+                    <div class="box-text box-horizontal">
                         <label for="middle-name" th:text="#{signUp.middlename}"/>
                         <input type="text" name="middle-name" id="middle-name">
                     </div>
@@ -73,12 +76,12 @@
                 </div>
                 <div class="box-with-details">
                     <div class="box-text">
-                        <label for="gender">Gender</label>
+                        <label for="gender" th:text="#{signUp.gender}"/>
                         <div class="custom-select">
                             <select id="gender" name="gender">
-                                <option>Male</option>
-                                <option>Female</option>
-                                <option>Non-binary</option>
+                                <option th:text="#{signUp.gender.male}"/>
+                                <option th:text="#{signUp.gender.female}"/>
+                                <option th:text="#{signUp.gender.other}"/>
                             </select>
                         </div>
                     </div>
@@ -96,33 +99,33 @@
                             <input type="email" name="email" id="email" th:value="${user.getEmail()}"required>
                         </div>
                         <div class="box-error">
-                            <a id="error-email" class="hidden">Your email address is not correct.</a>
+                            <a id="error-email" class="hidden" th:text="#{signUp.email.error}"></a>
                         </div>
                     </div>
                 </div>
                 <div class="box-sign-up-security-details box-with-details">
-                    <div class="box-text">
+                    <div class="box-text box-horizontal">
                         <label for="password" th:text="#{signIn.password}"/>
                         <div class="input-wrapper">
                             <input type="password" name="password" id="password" required>
                         </div>
                         <div class="box-error">
-                            <a id="error-easy" class="hidden">Your password is too easy</a>
-                            <a id="error-main" class="hidden">Your password needs to</a>
+                            <a id="error-easy" class="hidden" th:text="#{signUp.password.error.easy}"></a>
+                            <a id="error-main" class="hidden" th:text="#{signUp.password.error}"></a>
                             <ul>
-                                <li id="error_length" class="hidden">be at least 8 characters long</li>
-                                <li id="error_symbols" class="hidden">include at least one number or symbol</li>
-                                <li id="error_characters" class="hidden">include both lower and upper characters</li>
+                                <li id="error_length" class="hidden" th:text="#{signUp.password.error.length}"/>
+                                <li id="error_symbols" class="hidden" th:text="#{signUp.password.error.symbol}"/>
+                                <li id="error_characters" class="hidden" th:text="#{signUp.password.error.characters}"/>
                             </ul>
                         </div>
                     </div>
-                    <div class="box-text">
+                    <div class="box-text box-horizontal">
                         <label for="reentry-password" th:text="#{signUp.reentry}"/>
                         <div class="input-wrapper">
                             <input type="password" name="reentry-password" id="reentry-password" required>
                         </div>
                         <div class="box-error">
-                            <a id="error-password-match" class="hidden">Please make sure your passwords match.</a>
+                            <a id="error-password-match" class="hidden" th:text="#{signUp.password.error.match}"></a>
                         </div>
                     </div>
                 </div>
@@ -132,15 +135,41 @@
         <div class="box-sign-up std-box hidden-box">
             <div class="box-sign-up-form">
                 <div class="box-text box-description">
-                    <a>This is the last step for sign up. After you submit your registration form, you will receive by mail
-                    a confirmation letter. This letter will contain a link, which one will activate your account.</a>
+                    <a th:text="#{signUp.lastStep}"></a>
                 </div>
                 <div class="box-text box-personal-data">
                     <input type="checkbox" id="personal-info">
-                    <label for="personal-info">I agree to process my personal data.</label>
+                    <label for="personal-info" th:text="#{signUp.personalDataAgreement}"/>
                 </div>
                 <div class="box-text" id="sign-up-button">
-                    <button>Sign up</button>
+                    <button id="sign-up-send-button" disabled th:text="#{signUp.button}">Sign up</button>
+                </div>
+            </div>
+        </div>
+        <div class="box-sign-up std-box hidden-box">
+            <div class="box-sign-up-form">
+                <div class="end-message">
+                    <div class="container-loader">
+                        <p class="circle loader"/>
+                    </div>
+                    <div class="end-message-container-left hidden" id="end-message-container-left-success">
+                        <a></a>
+                    </div>
+                    <div class="end-message-container-left hidden" id="end-message-container-left-error">
+                        <a></a>
+                    </div>
+                    <div class="end-message-container-right hidden" id="end-message-container-right-success">
+                        <h2 th:text="#{signUp.success}"/>
+                    </div>
+                    <div class="end-message-container-right hidden" id="end-message-container-right-bad-request">
+                        <h2 th:text="#{signUp.badRequest}"/>
+                    </div>
+                    <div class="end-message-container-right hidden" id="end-message-container-right-email-already-exist">
+                        <h2 th:text="#{signUp.emailAlreadyExist}"/>
+                    </div>
+                    <div class="end-message-container-right hidden" id="end-message-container-right-error">
+                        <h2 th:text="#{signUp.error}"/>
+                    </div>
                 </div>
             </div>
         </div>

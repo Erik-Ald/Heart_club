@@ -16,7 +16,7 @@ main {
     align-items: center;
 }
 .box-sign-up {
-    width: calc(100% - 8vw);
+    width: calc(100% - 10vw);
     margin-bottom: 2vh;
 }
 .box-sign-up-form {
@@ -49,8 +49,11 @@ main {
 .box-text {
     display: flex;
     flex-direction: column;
-    margin: 0 2vw;
+    margin: 0;
     width: 100%;
+}
+.box-horizontal {
+    margin: 0 1vw 0 0;
 }
 .box-text button {
     margin: 2vh 0;
@@ -153,4 +156,65 @@ span {
 
 .box-description {
     padding: 2vh 0;
+}
+.end-message {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 10vh 0 10vh 0;
+}
+.end-message-container-left a:before {
+    font-family: FontAwesome;
+    font-size: 60px;
+    padding-right: 2vw;
+}
+#end-message-container-left-success a:before {
+    content: attr(data-content) "\f00c";
+    color: green;
+}
+#end-message-container-left-error a:before {
+    content: attr(data-content) "\f06a";
+    color: indianred;
+}
+
+progress {
+    width: 90%;
+    color: var(--color-main);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+}
+progress::-moz-progress-bar {
+    background-color: var(--color-main);
+    border-radius: 10px;
+}
+progress::-webkit-progress-value {
+    background-color: var(--color-main);
+    border-radius: 10px;
+}
+progress::-webkit-progress-bar {
+    background-color: var(--color-inactive);
+    border-radius: 16px;
+}
+.box-progress {
+    display: none;
+    padding: 2vh 0 2vh 0;
+    width: calc(100% - 2vw);
+    margin-bottom: 2vh;
+}
+@media screen and (max-width:1250px) {
+    .container-left {
+        display: none;
+    }
+    .box-with-details {
+        flex-wrap: wrap;
+    }
+    .box-progress {
+        display: flex;
+    }
+    .container-right {
+        min-width: 95%;
+    }
 }

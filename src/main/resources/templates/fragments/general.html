@@ -1,7 +1,7 @@
 <header>
     <div class="plane-logo">
         <figure></figure>
-        <h1>Heart club</h1>
+        <h1 th:text="#{general.siteName}"/>
     </div>
 </header>
 
@@ -12,9 +12,9 @@
 
 <div class="box-navigation-buttons">
     <div class="button-back">
-        <button disabled>Back</button>
+        <button disabled th:text="#{general.backButton}"/>
     </div>
     <div class="button-next">
-        <button>Next</button>
+        <button th:text="#{general.nextButton}"/>
     </div>
 </div>
